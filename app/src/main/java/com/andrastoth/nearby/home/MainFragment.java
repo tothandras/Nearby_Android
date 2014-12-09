@@ -10,13 +10,22 @@ import android.widget.ImageView;
 
 import com.andrastoth.nearby.R;
 import com.andrastoth.nearby.base.BaseFragment;
+import com.andrastoth.nearby.data.User;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
 
 import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,6 +36,15 @@ import butterknife.InjectView;
 public class MainFragment extends BaseFragment {
     private static final String TAG = "MainFragment";
     private static final int LAYOUT = R.layout.main_fragment;
+
+    @Inject
+    List<User> users;
+
+    @Inject
+    User.Builder userBuilder;
+
+    @Inject
+    Gson gson;
 
     @InjectView(R.id.authButton)
     protected LoginButton authButton;
@@ -41,23 +59,48 @@ public class MainFragment extends BaseFragment {
     ViewGroup friendsFragment;
 
     private UiLifecycleHelper uiHelper;
-    private GraphUser user;
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
             Log.i(TAG, "Logged in...");
+            authFragment.setVisibility(View.INVISIBLE);
+            getUserFriends(session);
         } else if (state.isClosed()) {
             Log.i(TAG, "Logged out...");
+            authFragment.setVisibility(View.VISIBLE);
         }
     }
 
-    private LoginButton.UserInfoChangedCallback userInfoChangedCallback = new LoginButton.UserInfoChangedCallback() {
-        @Override
-        public void onUserInfoFetched(GraphUser graphUser) {
-            MainFragment.this.user = graphUser;
-            updateUI();
-        }
-    };
+    private void getUserFriends(final Session session) {
+        Request.GraphUserCallback callback = new Request.GraphUserCallback() {
+            @Override
+            public void onCompleted(GraphUser graphUser, Response response) {
+                if (graphUser != null && session == Session.getActiveSession()) {
+                    Request.GraphUserListCallback callback = new Request.GraphUserListCallback() {
+                        @Override
+                        public void onCompleted(List<GraphUser> graphUsers, Response response) {
+                            for (GraphUser user : graphUsers) {
+                                String url = "";
+                                try {
+                                    url = user.getInnerJSONObject().getJSONObject("picture").getJSONObject("data").getString("url");
+                                } catch (JSONException e) {
+                                    Log.e(TAG, e.getMessage());
+                                }
+                                User u = userBuilder.id(user.getId()).name(user.getName()).picture(url).build();
+                                users.add(u);
+                            }
+                        }
+                    };
+                    Bundle params = new Bundle();
+                    params.putString("fields", "id,name,picture");
+                    Request friendsRequest = Request.newMyFriendsRequest(session, callback);
+                    friendsRequest.setParameters(params);
+                    friendsRequest.executeAsync();
+                }
+            }
+        };
+        Request.newMeRequest(session, callback).executeAsync();
+    }
 
     private Session.StatusCallback statusCallback = new Session.StatusCallback() {
         @Override
@@ -65,17 +108,6 @@ public class MainFragment extends BaseFragment {
             onSessionStateChange(session, state, exception);
         }
     };
-
-    private void updateUI() {
-        if (user != null) {
-            Log.i(TAG, user.getName());
-            authFragment.setVisibility(View.INVISIBLE);
-            friendsFragment.setVisibility(View.VISIBLE);
-        } else {
-            authFragment.setVisibility(View.VISIBLE);
-            friendsFragment.setVisibility(View.INVISIBLE);
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +124,7 @@ public class MainFragment extends BaseFragment {
         // may not be triggered. Trigger it if it's open/closed.
         Session session = Session.getActiveSession();
         if (session != null &&
-                (session.isOpened() || session.isClosed()) ) {
+                (session.isOpened() || session.isClosed())) {
             onSessionStateChange(session, session.getState(), null);
         }
 
@@ -127,10 +159,10 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(LAYOUT, container, false);
         ButterKnife.inject(this, view);
-        // TODO Use "injected" views...
+
         authButton.setFragment(this);
         authButton.setReadPermissions(Arrays.asList("email", "user_friends"));
-        authButton.setUserInfoChangedCallback(userInfoChangedCallback);
+
         return view;
     }
 

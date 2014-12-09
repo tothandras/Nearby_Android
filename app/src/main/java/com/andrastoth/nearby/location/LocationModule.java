@@ -1,4 +1,4 @@
-package com.andrastoth.nearby.facebook;
+package com.andrastoth.nearby.location;
 
 import dagger.Module;
 
@@ -6,10 +6,8 @@ import dagger.Module;
  * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
  */
 @Module(
-        injects = {
-        },
+
         library = true
 )
-public class FacebookModule {
-
+public class LocationModule {
 }

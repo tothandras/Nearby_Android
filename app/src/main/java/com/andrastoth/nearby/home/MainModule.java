@@ -5,6 +5,7 @@ import android.content.Context;
 import com.andrastoth.nearby.NearbyModule;
 import com.andrastoth.nearby.base.BaseActivity;
 import com.andrastoth.nearby.base.InjectActivityContext;
+import com.andrastoth.nearby.data.DataModule;
 
 import javax.inject.Singleton;
 
@@ -20,6 +21,9 @@ import dagger.Provides;
         injects = {
                 MainActivity.class,
                 MainFragment.class
+        },
+        includes = {
+                DataModule.class
         },
         addsTo = NearbyModule.class,
         library = true
