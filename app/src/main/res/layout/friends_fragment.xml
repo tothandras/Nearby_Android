@@ -2,12 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
         android:background="@color/primary_dark"
-        android:contentDescription="@string/login_image_description" />
+        android:contentDescription="@string/login_image_description"/>
+    
+    <Button
+        android:id="@+id/start_navigation_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/primary"
+        android:text="MAP"
+        android:textSize="30sp"/>
 
 </LinearLayout>

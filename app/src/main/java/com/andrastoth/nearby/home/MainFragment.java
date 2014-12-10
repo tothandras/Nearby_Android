@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.andrastoth.nearby.R;
 import com.andrastoth.nearby.base.BaseFragment;
 import com.andrastoth.nearby.data.User;
+import com.andrastoth.nearby.navigation.NavigationActivity;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
@@ -170,5 +172,12 @@ public class MainFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @OnClick(R.id.start_navigation_button)
+    public void startNavigation(View view) {
+        Intent intent = new Intent(getActivity(), NavigationActivity.class);
+        
+        startActivity(intent);
     }
 }

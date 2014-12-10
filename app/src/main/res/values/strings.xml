@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Nearby</string>
     <string name="facebook_app_id">320570188137446</string>
+    <!-- Development key -->
+    <string name="google_api_key">AIzaSyBu6fyZDiPyMM6hNeknh8IsaFlXS9S1r94</string>
     <string name="login_image_description">Login image</string>
+    <string name="profile_picture_content_description">Profile picture</string>
 </resources>
