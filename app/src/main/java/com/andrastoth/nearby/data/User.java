@@ -7,6 +7,7 @@ public class User {
     private final String id;
     private final String name;
     private final String picture;
+    private boolean selected;
 
     public static class Builder {
         private String id;
@@ -37,6 +38,7 @@ public class User {
         this.id = builder.id;
         this.name = builder.name;
         this.picture = builder.picture;
+        selected = false;
     }
 
     public String getId() {
@@ -49,5 +51,21 @@ public class User {
 
     public String getPicture() {
         return picture;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof User) {
+            return id.equals(((User) o).id);
+        }
+        return super.equals(o);
     }
 }

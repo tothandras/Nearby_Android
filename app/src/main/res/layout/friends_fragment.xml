@@ -10,15 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:background="@color/accent"/>
     
     <Button
         android:id="@+id/start_navigation_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/primary"
-        android:text="MAP"
-        android:textSize="30sp"/>
+        android:background="#000000"
+        android:text="TEST MAP"
+        android:textSize="30sp"
+        android:textColor="@color/primary_text"/>
 
 </LinearLayout>

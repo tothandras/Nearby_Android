@@ -10,8 +10,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Arrays;
@@ -61,18 +61,19 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
             }
         };
 
-        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                Location myLocation = googleMap.getMyLocation();
-                if (myLocation != null) {
-                    LatLng u = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                    if (!cameraPosition.target.equals(u)) {
-                        googleMap.setOnMyLocationChangeListener(null);
-                    } else {
-                        googleMap.setOnMyLocationChangeListener(onLocationChangedListener);
-                    }
-                }
+            public boolean onMyLocationButtonClick() {
+                googleMap.setOnMyLocationChangeListener(onLocationChangedListener);
+                return false;
+            }
+        });
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                googleMap.setOnMyLocationChangeListener(null);
+                return false;
             }
         });
 

@@ -2,6 +2,8 @@ package com.andrastoth.nearby.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,12 +75,19 @@ public class MainFragment extends BaseFragment {
     private UiLifecycleHelper uiHelper;
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
         if (state.isOpened()) {
             Log.i(TAG, "Logged in...");
+            if (actionBar != null) {
+                actionBar.show();
+            }
             authFragment.setVisibility(View.INVISIBLE);
             getUserFriends(session);
         } else if (state.isClosed()) {
             Log.i(TAG, "Logged out...");
+            if (actionBar != null) {
+                actionBar.hide();
+            }
             authFragment.setVisibility(View.VISIBLE);
         }
     }
@@ -94,14 +103,17 @@ public class MainFragment extends BaseFragment {
                             for (GraphUser user : graphUsers) {
                                 String url = "";
                                 try {
-                                    // TODO replace with GSON
+                                    // TODO replace with GSON?
                                     url = user.getInnerJSONObject().getJSONObject("picture").getJSONObject("data").getString("url");
                                 } catch (JSONException e) {
                                     Log.e(TAG, e.getMessage());
                                 }
                                 User u = userBuilder.id(user.getId()).name(user.getName()).picture(url).build();
-                                users.add(u);
+                                if (!users.contains(u)) {
+                                    users.add(u);
+                                }
                             }
+                            recyclerViewAdapter.notifyDataSetChanged();
                         }
                     };
                     Bundle params = new Bundle();
@@ -176,8 +188,14 @@ public class MainFragment extends BaseFragment {
         authButton.setFragment(this);
         authButton.setReadPermissions(Arrays.asList("email", "user_friends"));
 
+        recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
         return view;
     }

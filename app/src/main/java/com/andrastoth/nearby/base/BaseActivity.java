@@ -1,7 +1,7 @@
 package com.andrastoth.nearby.base;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import com.andrastoth.nearby.NearbyApplication;
 
@@ -13,7 +13,7 @@ import dagger.ObjectGraph;
 /**
  * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
  */
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends ActionBarActivity {
     private ObjectGraph activityGraph;
 
     @Override
