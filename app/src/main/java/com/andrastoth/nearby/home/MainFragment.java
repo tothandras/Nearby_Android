@@ -2,6 +2,7 @@ package com.andrastoth.nearby.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,17 +49,26 @@ public class MainFragment extends BaseFragment {
     @Inject
     Gson gson;
 
+    @Inject
+    RecyclerView.Adapter recyclerViewAdapter;
+
+    @Inject
+    RecyclerView.LayoutManager recyclerViewLayoutManager;
+
     @InjectView(R.id.authButton)
-    protected LoginButton authButton;
+    LoginButton authButton;
 
     @InjectView(R.id.authImage)
-    protected ImageView authImage;
+    ImageView authImage;
 
     @InjectView(R.id.authFragment)
     ViewGroup authFragment;
 
     @InjectView(R.id.friendsFragment)
     ViewGroup friendsFragment;
+
+    @InjectView(R.id.friends_recycler_view)
+    RecyclerView recyclerView;
 
     private UiLifecycleHelper uiHelper;
 
@@ -84,6 +94,7 @@ public class MainFragment extends BaseFragment {
                             for (GraphUser user : graphUsers) {
                                 String url = "";
                                 try {
+                                    // TODO replace with GSON
                                     url = user.getInnerJSONObject().getJSONObject("picture").getJSONObject("data").getString("url");
                                 } catch (JSONException e) {
                                     Log.e(TAG, e.getMessage());
@@ -165,6 +176,9 @@ public class MainFragment extends BaseFragment {
         authButton.setFragment(this);
         authButton.setReadPermissions(Arrays.asList("email", "user_friends"));
 
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
         return view;
     }
 
@@ -177,7 +191,11 @@ public class MainFragment extends BaseFragment {
     @OnClick(R.id.start_navigation_button)
     public void startNavigation(View view) {
         Intent intent = new Intent(getActivity(), NavigationActivity.class);
-        
+        Bundle bundle = new Bundle();
+        float[] friendLocation = {47.476621f, 19.058588f};
+        bundle.putFloatArray(NavigationActivity.FRIEND_LOCATION, friendLocation);
+        bundle.putString(NavigationActivity.FRIEND_NAME, "Test User");
+        intent.putExtra(NavigationActivity.LAT_LNG, bundle);
         startActivity(intent);
     }
 }

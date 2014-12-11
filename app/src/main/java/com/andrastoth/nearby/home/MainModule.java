@@ -1,11 +1,16 @@
 package com.andrastoth.nearby.home;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.andrastoth.nearby.NearbyModule;
 import com.andrastoth.nearby.base.BaseActivity;
 import com.andrastoth.nearby.base.InjectActivityContext;
 import com.andrastoth.nearby.data.DataModule;
+import com.andrastoth.nearby.data.User;
+
+import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -13,14 +18,13 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * This module represents objects which exist only for the scope of a single activity. We can
- * safely create singletons using the activity instance because the entire object graph will only
- * ever exist inside of that activity.
+ * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
  */
 @Module(
         injects = {
                 MainActivity.class,
-                MainFragment.class
+                MainFragment.class,
+                UserAdapter.class
         },
         includes = {
                 DataModule.class
@@ -48,7 +52,17 @@ public class MainModule {
     @Provides
     @Singleton
     @InjectActivityContext
-    Context provideActivityContext() {
+    public Context provideActivityContext() {
         return activity;
+    }
+
+    @Provides
+    public RecyclerView.LayoutManager provideRecyclerViewLayoutManager() {
+        return new LinearLayoutManager(activity);
+    }
+
+    @Provides
+    public RecyclerView.Adapter provideRecyclerViewAdapter(List<User> dataset){
+        return new UserAdapter(dataset);
     }
 }

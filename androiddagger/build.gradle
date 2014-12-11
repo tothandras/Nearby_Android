@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'android-apt'
+
+def DaggerVersion = '1.2.2'
+def SupportVersion = '21.0.2'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.1'
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 17
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    apt "com.squareup.dagger:dagger-compiler:$DaggerVersion"
+    compile "com.squareup.dagger:dagger:$DaggerVersion"
+    compile "com.android.support:appcompat-v7:$SupportVersion"
+}

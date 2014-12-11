@@ -10,6 +10,9 @@ import java.util.List;
 
 import dagger.ObjectGraph;
 
+/**
+ * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
+ */
 public abstract class BaseActivity extends FragmentActivity {
     private ObjectGraph activityGraph;
 

@@ -38,4 +38,16 @@ public class User {
         this.name = builder.name;
         this.picture = builder.picture;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
 }

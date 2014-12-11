@@ -5,6 +5,9 @@ def FacebookSDKVersion = '3.21.1'
 def RetrofitVersion = '1.8.0'
 def ButterKnifeVersion = '6.0.0'
 def GsonVersion = '2.3.1'
+def PicassoVersion = '2.4.0'
+def SupportVersion = '21.0.2'
+def PlayServicesVersion = '6.5.+'
 
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
@@ -33,6 +36,8 @@ dependencies {
     compile "com.squareup.retrofit:retrofit:$RetrofitVersion"
     compile "com.jakewharton:butterknife:$ButterKnifeVersion"
     compile "com.google.code.gson:gson:$GsonVersion"
-    compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.google.android.gms:play-services:6.5.+'
+    compile "com.squareup.picasso:picasso:$PicassoVersion"
+    compile "com.android.support:appcompat-v7:$SupportVersion"
+    compile "com.android.support:recyclerview-v7:$SupportVersion"
+    compile "com.google.android.gms:play-services:$PlayServicesVersion"
 }

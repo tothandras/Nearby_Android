@@ -5,12 +5,12 @@
     android:orientation="vertical"
     android:weightSum="10">
 
-    <ImageView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/friends_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:background="@color/primary_dark"
-        android:contentDescription="@string/login_image_description"/>
+        android:scrollbars="vertical"/>
     
     <Button
         android:id="@+id/start_navigation_button"
