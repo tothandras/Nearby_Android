@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.andrastoth.nearby.NearbyModule;
 import com.andrastoth.nearby.base.BaseActivity;
 import com.andrastoth.nearby.base.InjectActivityContext;
+import com.andrastoth.nearby.common.CommonModule;
 import com.andrastoth.nearby.data.DataModule;
 import com.andrastoth.nearby.data.User;
 
@@ -27,7 +28,8 @@ import dagger.Provides;
                 UserAdapter.class
         },
         includes = {
-                DataModule.class
+                DataModule.class,
+                CommonModule.class
         },
         addsTo = NearbyModule.class,
         library = true
