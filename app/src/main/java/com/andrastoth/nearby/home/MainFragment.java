@@ -2,6 +2,7 @@ package com.andrastoth.nearby.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +70,9 @@ public class MainFragment extends BaseFragment {
     @InjectView(R.id.friendsFragment)
     ViewGroup friendsFragment;
 
+    @InjectView(R.id.progress_bar)
+    ContentLoadingProgressBar progressBar;
+
     @InjectView(R.id.friends_recycler_view)
     RecyclerView recyclerView;
 
@@ -93,6 +97,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private void getUserFriends(final Session session) {
+        progressBar.show();
         Request.GraphUserCallback callback = new Request.GraphUserCallback() {
             @Override
             public void onCompleted(GraphUser graphUser, Response response) {
@@ -113,6 +118,7 @@ public class MainFragment extends BaseFragment {
                                     users.add(u);
                                 }
                             }
+                            progressBar.hide();
                             recyclerViewAdapter.notifyDataSetChanged();
                         }
                     };

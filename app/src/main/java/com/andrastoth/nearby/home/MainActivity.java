@@ -1,5 +1,6 @@
 package com.andrastoth.nearby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.andrastoth.nearby.R;
@@ -58,5 +59,10 @@ public class MainActivity extends BaseActivity  {
     protected void onPause() {
         super.onPause();
         AppEventsLogger.deactivateApp(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

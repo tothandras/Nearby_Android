@@ -8,6 +8,7 @@ def GsonVersion = '2.3.1'
 def PicassoVersion = '2.4.0'
 def SupportVersion = '21.0.2'
 def PlayServicesVersion = '6.5.+'
+def ParseVersion = '1.+'
 
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
@@ -40,4 +41,5 @@ dependencies {
     compile "com.android.support:appcompat-v7:$SupportVersion"
     compile "com.android.support:recyclerview-v7:$SupportVersion"
     compile "com.google.android.gms:play-services:$PlayServicesVersion"
+    compile "com.parse.bolts:bolts-android:$ParseVersion"
 }
