@@ -11,7 +11,7 @@
         android:src="@drawable/auth_image"
         android:scaleType="centerCrop"
         android:contentDescription="@string/login_image_description" />
-    
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,11 +21,25 @@
         android:textSize="60sp"
         android:textColor="#e0e0e0"/>
 
-    <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
+    <Button
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+
+        android:text="@string/com_facebook_loginview_log_in_button"
+        android:textColor="@color/com_facebook_loginview_text_color"
+        android:textSize="@dimen/com_facebook_loginview_text_size"
+
+        android:background="@drawable/com_facebook_button_blue"
+        android:drawableLeft="@drawable/com_facebook_inverse_icon"
+        android:drawablePadding="@dimen/com_facebook_likebutton_compound_drawable_padding"
+        android:paddingLeft="@dimen/com_facebook_loginview_padding_left"
+        android:paddingTop="@dimen/com_facebook_loginview_padding_top"
+        android:paddingRight="@dimen/com_facebook_loginview_padding_right"
+        android:paddingBottom="@dimen/com_facebook_loginview_padding_bottom"
+
+        android:onClick="onLoginClick"/>
 
 </FrameLayout>

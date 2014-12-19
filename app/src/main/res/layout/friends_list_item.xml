@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
-    android:background="@color/primary_dark"
+    android:background="@android:color/white"
     android:padding="@dimen/list_item_padding">
 
     <ImageView
@@ -18,7 +18,7 @@
         android:layout_height="@dimen/list_item_content"
         android:layout_marginLeft="@dimen/list_item_text_margin"
         android:gravity="center_vertical"
-        android:textColor="@color/primary_text"
+        android:textColor="@android:color/black"
         android:textSize="@dimen/list_item_text"/>
 
 </RelativeLayout>

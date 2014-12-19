@@ -1,4 +1,4 @@
-package com.andrastoth.nearby.home;
+package com.andrastoth.nearby.friends;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,8 +23,8 @@ import dagger.Provides;
  */
 @Module(
         injects = {
-                MainActivity.class,
-                MainFragment.class,
+                FriendsActivity.class,
+                FriendsListFragment.class,
                 UserAdapter.class
         },
         includes = {
@@ -34,17 +34,17 @@ import dagger.Provides;
         addsTo = NearbyModule.class,
         library = true
 )
-public class MainModule {
+public class FriendsModule {
     private final BaseActivity activity;
 
-    public MainModule(BaseActivity activity) {
+    public FriendsModule(BaseActivity activity) {
         this.activity = activity;
     }
 
     @Provides
     @Singleton
-    public MainFragment provideLoginFragment() {
-        return new MainFragment();
+    public FriendsListFragment provideFriendsListFragment() {
+        return new FriendsListFragment();
     }
 
     /**

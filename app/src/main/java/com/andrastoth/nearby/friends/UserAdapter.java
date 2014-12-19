@@ -1,4 +1,4 @@
-package com.andrastoth.nearby.home;
+package com.andrastoth.nearby.friends;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

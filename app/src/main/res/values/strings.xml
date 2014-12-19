@@ -7,4 +7,11 @@
     <string name="parse_client_key">pTQ9VoF9Kd2zR82qJnMiUkQXKiijbsXU9M6zgm8A</string>
     <string name="login_image_description">Login image</string>
     <string name="profile_picture_content_description">Profile picture</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="log_out">Log out</string>
+    <string-array name="drawer_array">
+        <item>Friends</item>
+        <item>Log out</item>
+    </string-array>
 </resources>

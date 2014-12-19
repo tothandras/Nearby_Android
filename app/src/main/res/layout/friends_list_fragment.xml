@@ -13,25 +13,14 @@
         android:layout_gravity="center_horizontal"
         android:indeterminate="true"
         android:indeterminateOnly="true"
-        android:background="@color/accent"
+        android:background="@android:color/white"
         android:visibility="visible"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friends_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:background="@color/accent"/>
-    
-    <Button
-        android:id="@+id/start_navigation_button"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#000000"
-        android:text="TEST MAP"
-        android:textSize="30sp"
-        android:textColor="@color/primary_text"/>
+        android:background="@android:color/white"/>
 
 </LinearLayout>

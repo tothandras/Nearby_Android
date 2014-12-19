@@ -24,8 +24,10 @@ public class NearbyApplication extends Application {
 
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
+
         String PARSE_APPLICATION_ID = getResources().getString(R.string.parse_app_id);
         String PARSE_CLIENT_KEY = getResources().getString(R.string.parse_client_key);
+
         Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
     }
 
