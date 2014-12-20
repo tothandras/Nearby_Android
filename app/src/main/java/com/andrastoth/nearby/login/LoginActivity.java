@@ -2,6 +2,7 @@ package com.andrastoth.nearby.login;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,15 +10,19 @@ import android.view.View;
 
 import com.andrastoth.nearby.R;
 import com.andrastoth.nearby.base.BaseActivity;
+import com.andrastoth.nearby.base.InjectApplicationContext;
 import com.andrastoth.nearby.friends.FriendsActivity;
+import com.andrastoth.nearby.location.LocationReceiver;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -30,6 +35,10 @@ public class LoginActivity extends BaseActivity {
 
     private Dialog progressDialog;
 
+    @Inject
+    @InjectApplicationContext
+    Context context;
+
     @Override
     protected List<Object> getModules() {
         List<Object> modules = Arrays.<Object>asList(new LoginModule(this));
@@ -40,7 +49,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(LAYOUT);
         ButterKnife.inject(this);
 
@@ -48,15 +56,9 @@ public class LoginActivity extends BaseActivity {
         // and it's linked to a Facebook account.
         ParseUser currentUser = ParseUser.getCurrentUser();
         if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
-            progressDialog = ProgressDialog.show(LoginActivity.this, "", "Logging in...", true);
-            ParseFacebookUtils.saveLatestSessionData(currentUser, new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    // Go to the user info activity
-                    progressDialog.dismiss();
-                    showFriendsActivity();
-                }
-            });
+            saveUser();
+            sendLoggedInBroadcast();
+            showFriendsActivity();
         }
     }
 
@@ -66,10 +68,20 @@ public class LoginActivity extends BaseActivity {
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
+    private void saveUser() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("user", ParseUser.getCurrentUser());
+        installation.saveInBackground();
+    }
+
+    private void sendLoggedInBroadcast() {
+        Intent i = new Intent(context, LocationReceiver.class);
+        i.setAction("com.tothandras.nearby.LOGGED_IN");
+        sendBroadcast(i);
+    }
+
     private void showFriendsActivity() {
         Intent intent = new Intent(this, FriendsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -86,9 +98,13 @@ public class LoginActivity extends BaseActivity {
                     Log.d(TAG, "The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     Log.d(TAG, "User signed up and logged in through Facebook!");
+                    saveUser();
+                    sendLoggedInBroadcast();
                     showFriendsActivity();
                 } else {
                     Log.d(TAG, "User logged in through Facebook!");
+                    saveUser();
+                    sendLoggedInBroadcast();
                     showFriendsActivity();
                 }
             }

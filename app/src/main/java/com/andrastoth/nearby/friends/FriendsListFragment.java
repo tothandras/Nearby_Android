@@ -17,11 +17,14 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
+import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,10 +36,11 @@ import butterknife.InjectView;
  * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
  */
 public class FriendsListFragment extends BaseFragment {
-    private static final String TAG = "MainFragment";
+    private static final String TAG = "FriendsListFragment";
     private static final int LAYOUT = R.layout.friends_list_fragment;
 
     private Session session;
+    private ParseUser currentUser;
 
     @Inject
     List<User> users;
@@ -65,8 +69,10 @@ public class FriendsListFragment extends BaseFragment {
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+        ParseFacebookUtils.initialize(getResources().getString(R.string.facebook_app_id));
         session = ParseFacebookUtils.getSession();
         if (session != null && session.isOpened()) {
+            currentUser = ParseUser.getCurrentUser();
             getFriends();
         }
 
@@ -77,7 +83,7 @@ public class FriendsListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
             startLoginActivity();
         }
@@ -97,6 +103,7 @@ public class FriendsListFragment extends BaseFragment {
                     Request.GraphUserListCallback callback = new Request.GraphUserListCallback() {
                         @Override
                         public void onCompleted(List<GraphUser> graphUsers, Response response) {
+                            ArrayList<String> friends = new ArrayList<String>();
                             for (GraphUser user : graphUsers) {
                                 String url = "";
                                 try {
@@ -108,10 +115,22 @@ public class FriendsListFragment extends BaseFragment {
                                 User u = userBuilder.id(user.getId()).name(user.getName()).picture(url).build();
                                 if (!users.contains(u)) {
                                     users.add(u);
+                                    friends.add(u.getId());
                                 }
                             }
                             progressBar.hide();
                             recyclerViewAdapter.notifyDataSetChanged();
+                            currentUser.put("friends", friends);
+                            currentUser.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Log.d(TAG, "Parse user friends saved");
+                                    } else {
+                                        Log.d(TAG, e.getMessage());
+                                    }
+                                }
+                            });
                         }
                     };
                     Bundle params = new Bundle();

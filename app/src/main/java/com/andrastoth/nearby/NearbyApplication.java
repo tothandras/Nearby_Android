@@ -17,7 +17,8 @@ public class NearbyApplication extends Application {
 
     private ObjectGraph applicationGraph;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
 
         applicationGraph = ObjectGraph.create(getModules().toArray());

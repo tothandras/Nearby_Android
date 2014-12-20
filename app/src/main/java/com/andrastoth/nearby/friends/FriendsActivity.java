@@ -32,7 +32,7 @@ import butterknife.InjectView;
  * Copyright (c) 2014 András Tóth (tothandras). All rights Reserved.
  */
 public class FriendsActivity extends BaseActivity implements MenuAdapter.OnItemClickListener {
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = "FriendsActivity";
     private static final int LAYOUT = R.layout.friends_activity;
     private static final int FRAGMENT_CONTAINER = R.id.content_frame;
 
@@ -50,8 +50,6 @@ public class FriendsActivity extends BaseActivity implements MenuAdapter.OnItemC
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private CharSequence drawerTitle;
-    private CharSequence title;
     private List<String> menuTitles;
 
     @Override
@@ -66,8 +64,6 @@ public class FriendsActivity extends BaseActivity implements MenuAdapter.OnItemC
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
         ButterKnife.inject(this);
-
-        title = drawerTitle = getTitle();
 
         menuTitles = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.drawer_array)));
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -87,14 +83,12 @@ public class FriendsActivity extends BaseActivity implements MenuAdapter.OnItemC
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(drawerTitle);
                 invalidateOptionsMenu();
             }
         };
@@ -172,6 +166,7 @@ public class FriendsActivity extends BaseActivity implements MenuAdapter.OnItemC
                     .commit();
         }
 
+        toolbar.setTitle(menuTitles.get(position));
         drawerLayout.closeDrawer(drawerList);
     }
 
