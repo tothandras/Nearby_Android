@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "Nearby": {
+            "applicationId": "UiHS6MSbJl4vNNL573WqvyiNEbH9ceV5CUsseNoA", 
+            "masterKey": "BBuknJFSnloIX8HRRsNMKQ8KwNZ3qLg5OUzvo4IH"
+        }, 
+        "_default": {
+            "link": "Nearby"
+        }
+    }
+}
