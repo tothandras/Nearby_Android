@@ -24,15 +24,16 @@ Parse.Cloud.job('nearbyFriends', function(request, status) {
     var friends = user.get('friends');
 
     var userQuery = new Parse.Query(Parse.User);
-    friends.forEach(function(friend){
-      userQuery.contains('facebookId', friend);
-      userQuery.near('location', location);
-      userQuery.find({
-        success: function(nearbyFriend) {
-          console.log(nearbyFriend.get('name'));
-        }
-      });
+    userQuery.containedIn('facebookId', friends);
+    userQuery.near('location', location);
+    userQuery.find({
+      success: function(results) {
+        results.forEach(function(result) {
+          console.log(result);
+        });
+      }
     });
+    return user.save();
   }).then(function() {
     // Set the job's success status
     status.success('Getting nearby friends: completed successfully.');
