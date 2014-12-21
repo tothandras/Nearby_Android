@@ -5,14 +5,28 @@ function getFbId(user) {
 Parse.Cloud.afterSave(Parse.User, function(request) {
   Parse.Cloud.useMasterKey();
   var user = request.object;
-
   user.set('facebookId', getFbId(user));
-
   user.save();
 });
 
-function nofityUser(user) {
-  // TODO
+function nofityUser(user, nearby) {
+  var query = new Parse.Query(Parse.Installation);
+  query.equalTo('user', user);
+  Parse.Push.send({
+    where: query,
+    data: {
+      alert: nearby.get('facebookId'), // TODO replace with name
+      title: 'Someone is nearby',
+      friendLocation: nearby.get('location')
+    }
+  }, {
+    success: function() {
+      // Push was successful
+    },
+    error: function(error) {
+      // Handle error
+    }
+  });
 }
 
 Parse.Cloud.job('nearbyFriends', function(request, status) {
@@ -29,7 +43,7 @@ Parse.Cloud.job('nearbyFriends', function(request, status) {
     userQuery.find({
       success: function(results) {
         results.forEach(function(result) {
-          console.log(result);
+          nofityUser(user, result);
         });
       }
     });

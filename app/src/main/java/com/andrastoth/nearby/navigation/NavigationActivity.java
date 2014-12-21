@@ -13,6 +13,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseGeoPoint;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +31,6 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
     private static final int LAYOUT = R.layout.navigation_activity;
     private static final int MAP_FRAGMENT = R.id.map;
 
-    public static final String LAT_LNG = "LatLng";
     public static final String FRIEND_LOCATION = "FriendLocation";
     public static final String FRIEND_NAME = "FriendName";
 
@@ -79,19 +82,26 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
 
         googleMap.setOnMyLocationChangeListener(onLocationChangedListener);
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra(LAT_LNG);
+        Bundle bundle = intent.getExtras();
         if (bundle != null) {
-            float[] friendLocation = bundle.getFloatArray(FRIEND_LOCATION);
-            String friendName = bundle.getString(FRIEND_NAME);
-            if (friendLocation.length == 2 && friendName != null) {
-                LatLng f = new LatLng(friendLocation[0], friendLocation[1]);
+            String jsonData = bundle.getString("com.parse.Data");
+            try {
+                JSONObject jsonObject = new JSONObject(jsonData);
+                JSONObject geoPointJsonObject = jsonObject.getJSONObject("friendLocation");
+                ParseGeoPoint geoPoint = new ParseGeoPoint(geoPointJsonObject.getDouble("latitude"), geoPointJsonObject.getDouble("longitude"));
+                String friendName = jsonObject.getString("alert");
+                LatLng f = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(f, 15));
 
                 googleMap.addMarker(new MarkerOptions()
                         .title(friendName)
                         .snippet("Your friend is here.")
                         .position(f));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
         }
     }
 }
