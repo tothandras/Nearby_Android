@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 def DaggerVersion = '1.2.2'
 def FacebookSDKVersion = '3.21.1'
-def RetrofitVersion = '1.8.0'
 def ButterKnifeVersion = '6.0.0'
 def GsonVersion = '2.3.1'
 def PicassoVersion = '2.4.0'
@@ -41,7 +40,6 @@ dependencies {
     apt "com.squareup.dagger:dagger-compiler:$DaggerVersion"
     compile "com.squareup.dagger:dagger:$DaggerVersion"
     compile "com.facebook.android:facebook-android-sdk:$FacebookSDKVersion"
-    compile "com.squareup.retrofit:retrofit:$RetrofitVersion"
     compile "com.jakewharton:butterknife:$ButterKnifeVersion"
     compile "com.google.code.gson:gson:$GsonVersion"
     compile "com.squareup.picasso:picasso:$PicassoVersion"

@@ -31,9 +31,6 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
     private static final int LAYOUT = R.layout.navigation_activity;
     private static final int MAP_FRAGMENT = R.id.map;
 
-    public static final String FRIEND_LOCATION = "FriendLocation";
-    public static final String FRIEND_NAME = "FriendName";
-
     @Override
     protected List<Object> getModules() {
         List<Object> modules = Arrays.<Object>asList(new NavigationModule(this));
